@@ -1,8 +1,25 @@
 const express = require("express");
+const cors = require("cors");
 const app = express();
+const products = require("../products.js");
+app.use(express.json());
+app.use(cors());
 
-app.get("/", (req, res) => res.send("Express on Vercel"));
+app.get("/", (req, res) => {
+  res.send("Welcome our to online shop API...");
+});
 
-app.listen(4000, () => console.log("Server ready on port 3000."));
+app.get("/products", (req, res) => {
+  res.send(products);
+});
 
-module.exports = app;
+app.get("/products/:id", (req, res) => {
+  const oneProduct = products.find((item) => {
+    return item.id == req.params.id;
+  });
+
+  res.send(oneProduct);
+});
+
+const port = 5000;
+app.listen(port, console.log(`http://localhost:${port}`));
